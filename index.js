@@ -11,11 +11,25 @@ let persons = [
     name: "Kuku Koodari",
     number: "050-54745668",
     id: 2
+  },
+  {
+    name: "Blose Nius",
+    number: "020-7467657",
+    id: 3
   }
 ];
 
+const reqTime = new Date();
+console.log(reqTime);
+
 app.get("/", (req, res) => {
   res.send("<h1>Tere!</h1>");
+});
+
+app.get("/info", (req, res) => {
+  res.write(`<p>Phonebook has info for ${persons.length} people</p>`);
+  res.write(`<p>${reqTime}</p>`);
+  res.end();
 });
 
 app.get("/api/persons", (req, res) => {
