@@ -20,10 +20,22 @@ let persons = [
 ];
 
 const reqTime = new Date();
-console.log(reqTime);
 
 app.get("/", (req, res) => {
   res.send("<h1>Tere!</h1>");
+});
+
+app.get("/api/persons/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const person = persons.find(person => {
+    return person.id === id;
+  });
+
+  if (person) {
+    res.json(person);
+  } else {
+    res.status(404).end();
+  }
 });
 
 app.get("/info", (req, res) => {
