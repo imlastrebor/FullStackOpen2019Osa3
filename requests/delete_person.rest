@@ -1,1 +1,1 @@
-delete http://localhost:3001/persons/35395
+delete https://puhelinluettelofs.herokuapp.com/persons
