@@ -2,6 +2,9 @@ const express = require("express");
 const morgan = require("morgan");
 const app = express();
 const bodyParser = require("body-parser");
+const cors = require("cors");
+
+app.use(cors());
 
 morgan.token("postData", function(req, res) {
   return JSON.stringify(req.body);
@@ -39,7 +42,7 @@ app.get("/", (req, res) => {
   res.send("<h1>Tere!</h1>");
 });
 
-app.get("/api/persons/:id", (req, res) => {
+app.get("/persons/:id", (req, res) => {
   const id = Number(req.params.id);
   const person = persons.find(person => {
     return person.id === id;
@@ -58,7 +61,7 @@ app.get("/info", (req, res) => {
   res.end();
 });
 
-app.get("/api/persons", (req, res) => {
+app.get("/persons", (req, res) => {
   res.json(persons);
 });
 
@@ -67,7 +70,7 @@ const generateId = () => {
   return random;
 };
 
-app.post("/api/persons", (req, res) => {
+app.post("/persons", (req, res) => {
   const body = req.body;
 
   if (!body.name) {
@@ -98,13 +101,14 @@ app.post("/api/persons", (req, res) => {
   }
 });
 
-app.delete("/api/persons/:id", (req, res) => {
+app.delete("/persons/:id", (req, res) => {
   const id = Number(req.params.id);
   persons = persons.filter(person => person.id !== id);
 
   res.status(204).end();
 });
 
-const port = 3001;
-app.listen(port);
-console.log(`Server running on port ${port}`);
+const PORT = 3001;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
