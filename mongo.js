@@ -25,18 +25,14 @@ const person = new Person({
   id: Math.floor(Math.random() * 99999)
 });
 
-if (process.argv.length === 3 && process.argv[2] === password) {
-  try {
-    console.log("Phonebook: ");
-    Person.find({}).then(result => {
-      result.forEach(person => {
-        console.log(person.name + person.number);
-      });
-      mongoose.connection.close();
+if (process.argv.length === 3) {
+  console.log("Phonebook: ");
+  Person.find({}).then(result => {
+    result.forEach(person => {
+      console.log(person.name + person.number);
     });
-  } catch (err) {
-    console.log("incorrect password");
-  }
+    mongoose.connection.close();
+  });
 } else {
   person.save().then(response => {
     console.log("person saved!");
