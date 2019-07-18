@@ -63,19 +63,19 @@ const generateId = () => {
   return random;
 };
 
-app.post("/persons", (req, res) => {
+app.post("/persons", (req, res, next) => {
   const body = req.body;
 
-  if (!body.name) {
-    return res.status(400).json({
-      error: "name missing"
-    });
-  }
-  if (!body.number) {
-    return res.status(400).json({
-      error: "number missing"
-    });
-  }
+  // if (!body.name) {
+  //   return res.status(400).json({
+  //     error: "name missing"
+  //   });
+  // }
+  // if (!body.number) {
+  //   return res.status(400).json({
+  //     error: "number missing"
+  //   });
+  // }
 
   const person = new Person({
     name: body.name,
@@ -89,9 +89,12 @@ app.post("/persons", (req, res) => {
       error: "name must be unique"
     });
   } else {
-    person.save().then(savedPerson => {
-      res.json(savedPerson.toJSON());
-    });
+    person
+      .save()
+      .then(savedPerson => {
+        res.json(savedPerson.toJSON());
+      })
+      .catch(error => console.log(error.message));
   }
 });
 
@@ -129,6 +132,8 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === "CastError" && error.kind == "ObjectId") {
     return response.status(400).send({ error: "malformatted id" });
+  } else if (error.name === "ValidationError") {
+    return response.status(400).json({ error: error.message });
   }
 
   next(error);
