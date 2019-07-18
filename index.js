@@ -92,9 +92,12 @@ app.post("/persons", (req, res, next) => {
     person
       .save()
       .then(savedPerson => {
-        res.json(savedPerson.toJSON());
+        return savedPerson.toJSON();
       })
-      .catch(error => console.log(error.message));
+      .then(savedAndFormattedPerson => {
+        res.json(savedAndFormattedPerson);
+      })
+      .catch(error => next(error));
   }
 });
 
